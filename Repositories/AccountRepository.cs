@@ -8,8 +8,8 @@ using DataAccessLayer;
 
 namespace Repositories
 {
-    internal class AccountRepository : IAccountRepository
+    public class AccountRepository : IAccountRepository
     {
-        public AccountMember GetAccountByID(string accountID) => AccountDAO.GetAccountByID(accountID);
+        public AccountMember GetAccountById(string accountID) => AccountDAO.GetAccountById(accountID);
     }
 }

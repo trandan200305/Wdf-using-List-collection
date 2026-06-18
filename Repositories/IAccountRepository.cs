@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using BusinessObjects;
 namespace Repositories
 {
-    public class IAccountRepository
+    public interface IAccountRepository
     {
-        AccountMenber GetAccountById(string accountID);
+        AccountMember GetAccountById(string accountID);
     }
 }

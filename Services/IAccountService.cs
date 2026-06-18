@@ -9,6 +9,6 @@ namespace Services
 {
     public interface IAccountService
     {
-        AccountMember GetAccountByID(string accountID);
+        AccountMember GetAccountById(string accountID);
     }
 }

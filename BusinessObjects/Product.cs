@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,7 @@ namespace BusinessObjects
 {
     public class Product
     {
+        public Product() { }
         public Product(int id, string name, int catId, short unitlnStock, decimal price)
         {
             this.ProductId = id;

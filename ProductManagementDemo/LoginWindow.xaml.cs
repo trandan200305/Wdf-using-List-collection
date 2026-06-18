@@ -1,17 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using BusinessObjects;
 using Services;
+using System.Windows;
 
 namespace ProductManagement
 {
@@ -20,45 +9,33 @@ namespace ProductManagement
     /// </summary>
     public partial class LoginWindow : Window
     {
-        private IAccountService accountService;
+        private readonly IAccountService iAccountService;
 
         public LoginWindow()
         {
             InitializeComponent();
-            accountService = new AccountService();
+            iAccountService = new AccountService();
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string accountID = txtUser.Text.Trim();
-            string password = txtPass.Password.Trim();
-
-            if (string.IsNullOrEmpty(accountID) || string.IsNullOrEmpty(password))
+            AccountMember account = iAccountService.GetAccountById(txtUser.Text);
+            if (account != null && account.MemberPassword.Equals(txtPass.Password)
+                && account.MemberRole == 1)
             {
-                MessageBox.Show("Please enter both Account ID and Password!", "Warning",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var account = accountService.GetAccountById(accountID);
-
-            if (account != null && account.MemberPassword == password)
-            {
+                this.Hide();
                 ProductManagementDemo.MainWindow mainWindow = new ProductManagementDemo.MainWindow();
                 mainWindow.Show();
-                this.Close();
             }
             else
             {
-                MessageBox.Show("Invalid Account ID or Password!", "Login Failed",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-                txtPass.Clear();
+                MessageBox.Show("You are not permission !");
             }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            this.Close();
         }
     }
 }

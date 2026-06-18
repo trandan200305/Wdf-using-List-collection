@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,10 +16,7 @@ namespace Services
         }
         public List<Category> GetCategories()
         {
-            return iCategoryRepository.GetCategories;
+            return iCategoryRepository.GetCategories();
         }
     }
 }
-
-
-

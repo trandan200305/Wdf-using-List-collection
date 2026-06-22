@@ -13,6 +13,8 @@ namespace DataAccessLayer
 
         public ProductDAO()
         {
+            if (listProducts == null)
+            {
             Product chai = new Product(1, "Chai", 3, 12, 18);
             Product chang = new Product(2, "Chang", 1, 23, 19);
             Product aniseed = new Product(3, "Aniseed Syrup", 2, 23, 10);
@@ -25,6 +27,8 @@ namespace DataAccessLayer
             Product ikura = new Product(10, "Ikura", 8, 13, 32);
             listProducts = new List<Product> { chai, chang, aniseed, chef, chefMix, grandma, uncle, northwoods, mishi, ikura };
 
+            }
+
         }
 
         public List<Product> GetProducts()
@@ -34,6 +38,17 @@ namespace DataAccessLayer
 
         public void SaveProduct(Product p)
         {
+            
+            if (p.ProductId == 0)
+            {
+                int maxId = 0;
+                foreach (Product existing in listProducts)
+                {
+                    if (existing.ProductId > maxId)
+                        maxId = existing.ProductId;
+                }
+                p.ProductId = maxId + 1;
+            }
             listProducts.Add(p);
         }
 

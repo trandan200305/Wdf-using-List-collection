@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using BusinessObjects;
@@ -41,11 +43,17 @@ namespace ProductManagementDemo
             try
             {
                 var productList = iProductService.GetProducts();
+                var catList = iCategoryService.GetCategories();
+                foreach (var product in productList)
+                {
+                    product.Category = catList.FirstOrDefault(c => c.CategoryId == product.CategoryId);
+                }
+                dgData.ItemsSource = null; 
                 dgData.ItemsSource = productList;
             }
             catch (Exception ex)
             {
-                // MessageBox.Show(ex.Message, "Error on load list of products");
+                MessageBox.Show(ex.Message, "Error on load list of products");
             }
             finally
             {
@@ -67,7 +75,7 @@ namespace ProductManagementDemo
                 product.ProductName = txtProductName.Text;
                 product.UnitPrice = Decimal.Parse(txtPrice.Text);
                 product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
-                product.CategoryId = Int32.Parse(cboCategory.SelectedValue.ToString());
+                product.CategoryId = int.Parse(cboCategory.SelectedValue.ToString());
                 iProductService.SaveProduct(product);
             }
             catch (Exception ex)
@@ -83,19 +91,19 @@ namespace ProductManagementDemo
         private void dgData_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DataGrid dataGrid = sender as DataGrid;
-            DataGridRow row =
-                (DataGridRow)dataGrid.ItemContainerGenerator
-                .ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowColumn =
-                dataGrid.Columns[0].GetCellContent(row).Parent as DataGridCell;
-            string id = ((TextBlock)RowColumn.Content).Text;
-            Product product = iProductService.GetProductById(Int32.Parse(id));
-            txtProductID.Text = product.ProductId.ToString();
-            txtProductName.Text = product.ProductName;
-            txtPrice.Text = product.UnitPrice.ToString();
-            txtUnitsInStock.Text = product.UnitsInStock.ToString();
-            cboCategory.SelectedValue = product.CategoryId;
+
+            if (dataGrid.SelectedIndex < 0) return;
+
+            if (dataGrid.SelectedItem is Product selectedProduct)
+            {
+                txtProductID.Text = selectedProduct.ProductId.ToString();
+                txtProductName.Text = selectedProduct.ProductName;
+                txtPrice.Text = selectedProduct.UnitPrice.ToString();
+                txtUnitsInStock.Text = selectedProduct.UnitsInStock.ToString();
+                cboCategory.SelectedValue = selectedProduct.CategoryId;
+            }
         }
+
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {

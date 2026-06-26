@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +9,11 @@ namespace DataAccessLayer
 
     public class AccountDAO
     {
-        public static AccountMember GetAccountById(string accountID)
-        {
-            AccountMember accountMember = new AccountMember();
-            if (accountID.Equals("PS0001")) // just for demonstration
+            public static AccountMember GetAccountById(string accountID)
             {
-                accountMember.MemberId = accountID;
-                accountMember.MemberPassword = "@1";
-                accountMember.MemberRole = 1;
+                using var db = new MyStoreContext();
+                return db.AccountMembers.FirstOrDefault(c => c.MemberId == accountID);
             }
-            return accountMember;
-        }
+        
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace BusinessObjects
         public string MemberId { get; set; } = null!;
 
         public string MemberPassword { get; set; } = null!;
-        public string FuttName { get; set; } = null!;
+        public string FullName { get; set; } = null!;
         public string? EmailAddress { get; set; }
         public int? MemberRole { get; set; }
     }
